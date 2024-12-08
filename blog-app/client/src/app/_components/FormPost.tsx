@@ -1,5 +1,5 @@
 "use client"
-import createPost from '@/action/useCreatePost'
+import {createPost} from '@/action/posts'
 import React, { useState } from 'react'
 import SubmitButton from './SubmitButton'
 

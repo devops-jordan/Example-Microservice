@@ -58,7 +58,7 @@ app.get("/posts/:id/comments", (req, res) => {
   const id = req.params.id;
 
   if (!commentsByPostID[id]) {
-    return res.status(404).json({ msg: "not found", commentsByPostID: null })
+    return res.status(404).json({ msg: `No comments for ${id}`, commentsByPostID: null })
   }
 
   const commentByPost = commentsByPostID[id];
