@@ -11,7 +11,23 @@ interface CommentByPost {
 
 const app = express()
 const PORT = process.env.PORT || 4001
-const commentsByPostID: CommentByPost = {}
+const commentsByPostID: CommentByPost = {
+  "12333": {
+    "id": "97d3b966",
+    "content": [
+      "hello world22",
+      "hello world22",
+      "hello world22"
+    ]
+  },
+  "1www2333": {
+    "id": "d9b708fd",
+    "content": [
+      "hello world22",
+      "hello world22"
+    ]
+  }
+}
 
 app.use(morgan('dev'))
 app.use(express.json())
@@ -37,6 +53,19 @@ app.post("/posts/:id/comments", (req, res) => {
 
   res.json({ msg: "ok", commentsByPostID })
 })
+
+app.get("/posts/:id/comments", (req, res) => {
+  const id = req.params.id;
+
+  if (!commentsByPostID[id]) {
+    return res.status(404).json({ msg: "not found", commentsByPostID: null })
+  }
+
+  const commentByPost = commentsByPostID[id];
+
+  return res.json({ msg: "ok", commentsByPostID: commentByPost })
+})
+
 
 app.listen(PORT, () => {
   console.log(`http://localhost:${PORT}/`)
