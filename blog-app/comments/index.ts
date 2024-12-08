@@ -2,7 +2,7 @@ import axios from "axios"
 import express from "express"
 import morgan from "morgan"
 import { randomBytes } from "node:crypto"
-
+import cors from "cors"
 interface CommentByPost {
   [key: string]: {
     id: string,
@@ -30,6 +30,7 @@ const commentsByPostID: CommentByPost = {
   }
 }
 
+app.use(cors())
 app.use(morgan('dev'))
 app.use(express.json())
 
@@ -76,6 +77,10 @@ app.get("/posts/:id/comments", (req, res) => {
   return res.json({ msg: "ok", commentsByPostID: commentByPost })
 })
 
+app.post('/events', async (req, res) => {
+  console.log('Event Recived', req.body.type)
+  res.json({ msg: 'ok' })
+})
 
 app.listen(PORT, () => {
   console.log(`http://localhost:${PORT}/`)

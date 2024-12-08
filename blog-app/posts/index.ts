@@ -43,6 +43,11 @@ app.post("/posts", async (req, res) => {
   res.json({ msg: "post ok", post })
 })
 
+app.post('/events', async (req, res) => {
+  console.log('Event Recived', req.body.type)
+  res.json({ msg: 'ok' })
+})
+
 app.listen(PORT, () => {
   console.log(`http://localhost:${PORT}/`)
 })
