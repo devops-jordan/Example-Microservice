@@ -5,15 +5,15 @@ import { useFormStatus } from 'react-dom'
 import SubmitButton from '../SubmitButton'
 
 
-const FormComment = () => {
+const FormComment = ({ postId }: { postId: string }) => {
   const [comment, setComment] = useState('')
-  const { pending } = useFormStatus()
+  const createCommentById = createComment.bind(null, postId)
+  
   return (
-    <form action={createComment}>
+    <form action={createCommentById}>
       <div className='flex gap-2'>
         <label htmlFor="comment">Title</label>
         <input
-          disabled={pending}
           value={comment}
           onChange={(e) => setComment(e.target.value)}
           name='comment'

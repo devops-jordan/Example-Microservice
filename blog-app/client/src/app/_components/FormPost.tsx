@@ -1,7 +1,8 @@
 "use client"
-import {createPost} from '@/action/posts'
+import { createPost } from '@/action/posts'
 import React, { useState } from 'react'
 import SubmitButton from './SubmitButton'
+import { usePending } from '@/hooks/usePending'
 
 const FormPost = () => {
   const [title, setTitle] = useState('')

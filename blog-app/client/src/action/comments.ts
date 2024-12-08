@@ -4,13 +4,16 @@ import { revalidatePath } from "next/cache";
 
 export interface ReponseUi {
   msg: string;
-  commentsByPostID: null | []
+  commentsByPostID: CommentsByPostID | null
+}
+export interface CommentsByPostID {
+  id: string,
+  content: [string]
 }
 
 const getAllComments = async ({ postid }: { postid: string }) => {
   try {
     const response = await axios.get(`http://localhost:4001/posts/${postid}/comments`);
-    console.log(response.data);
     return response.data as ReponseUi;
   } catch (error: any) {
     // console.error("Error: ", error.message);
@@ -21,11 +24,10 @@ const getAllComments = async ({ postid }: { postid: string }) => {
   }
 }
 
-const createComment = async (formData: FormData) => {
-  console.log(formData.get("comment"))
+const createComment = async (postId: string, formData: FormData,) => {
   try {
-    await axios.post("http://localhost:4001/posts/12333/comments", {
-      content: "hello world22"
+    await axios.post(`http://localhost:4001/posts/${postId}/comments`, {
+      content: formData.get("comment")
     })
     revalidatePath("")
     // await axios('http://localhost:4001/posts')
