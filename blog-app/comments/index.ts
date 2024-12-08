@@ -1,3 +1,4 @@
+import axios from "axios"
 import express from "express"
 import morgan from "morgan"
 import { randomBytes } from "node:crypto"
@@ -40,7 +41,7 @@ app.get('/posts/comments', (req, res) => {
   res.json({ msg: "all ok", commentsByPostID })
 })
 
-app.post("/posts/:id/comments", (req, res) => {
+app.post("/posts/:id/comments", async (req, res) => {
   const commentId = randomBytes(4).toString('hex')
   const { content } = req.body
   if (!commentsByPostID[req.params.id]) {
@@ -50,6 +51,15 @@ app.post("/posts/:id/comments", (req, res) => {
     commentsByPostID[req.params.id] = { id: commentId, content: [...comments, content] }
   }
   // commentsByPostID[req.params.id] = { content, id: commentId }
+
+  await axios.post("http://localhost:4005/events", {
+    type: "CommentCreated",
+    data: {
+      commentId,
+      content,
+      postId: req.params.id
+    }
+  })
 
   res.json({ msg: "ok", commentsByPostID })
 })

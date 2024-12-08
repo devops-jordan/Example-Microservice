@@ -2,6 +2,7 @@ import express from "express"
 import morgan from "morgan"
 import { randomBytes } from "node:crypto"
 import cors from "cors"
+import axios from "axios"
 
 const app = express()
 const PORT = process.env.PORT || 4000
@@ -26,9 +27,18 @@ app.get('/posts', (req, res) => {
   res.json({ msg: "ok", post })
 })
 
-app.post("/posts", (req, res) => {
+app.post("/posts", async (req, res) => {
   const id = randomBytes(4).toString('hex') //? i932eiwue83uw7eh
   const { title } = req.body
+
+  await axios.post("http://localhost:4005/events", {
+    type: "PostCreated",
+    data: {
+      id,
+      title
+    }
+  })
+
   post[id] = { id, title }
   res.json({ msg: "post ok", post })
 })
