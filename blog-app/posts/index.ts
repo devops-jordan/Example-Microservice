@@ -38,7 +38,7 @@ app.post("/posts", async (req, res) => {
       title
     }
   })
-
+  console.log(post)
   post[id] = { id, title }
   res.json({ msg: "post ok", post })
 })

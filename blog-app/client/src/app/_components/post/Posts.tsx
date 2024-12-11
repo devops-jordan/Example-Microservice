@@ -1,18 +1,20 @@
 import { getAllPosts } from '@/action/posts'
 import React from 'react'
 import PostCard from './post-card'
+import { ResponseCompleteUI } from '@/action/query'
 
-const Posts = async () => {
-  const data = await getAllPosts()
-  const confitData: Array<any> = Object.values(data.post)
+const Posts = async ({ confitData }: { confitData: Array<ResponseCompleteUI> | null }) => {
   return (
     <div className='grid grid-cols-3 gap-2'>
-      {confitData.map((d) => (
-        <PostCard
-          key={d.id}
-          data={d}
-        />
-      ))}
+
+      {confitData && (
+        confitData.map((d) => (
+          <PostCard
+            key={d.id}
+            data={d}
+          />
+        ))
+      )}
     </div>
   )
 }

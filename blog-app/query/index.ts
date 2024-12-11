@@ -18,7 +18,7 @@ export interface Post {
   [key: string]: PostDetail
 }
 
-let post: Post = {}
+let posts: Post = {}
 
 // Example of post
 // post = {
@@ -33,10 +33,28 @@ let post: Post = {}
 // }
 
 app.use(cors())
+app.use(express.json())
 app.use(morgan('dev'))
 
-app.get('/posts', (req, res) => { })
-app.post('/events', (req, res) => { })
+app.get('/posts', (req, res) => {
+  res.json({ msg: "ok", posts })
+})
+app.post('/events', (req, res) => {
+  const { type, data } = req.body;
+
+  if (type === "PostCreated") {
+    const { id, title } = data;
+    posts[id] = { id, title, comments: [] };
+  }
+
+  if (type === "CommentCreated") {
+    const { commentId, content, postId } = data
+    const post = posts[postId];
+    post.comments.push({ id: commentId, comment: content })
+  }
+
+  res.json({ msg: "ok" })
+})
 
 
 
